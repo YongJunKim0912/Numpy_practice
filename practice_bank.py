@@ -2,12 +2,14 @@ import random
 
 class Account:
     account_count = 0
-    
+
     def __init__(self, name, balance):
         self.deposit_count = 0
+        self.deposit_log = []
+        self.withdraw_log = []
 
-        self.name = name
-        self.balance = balance
+        self.name = name #용준
+        self.balance = balance #1000000
         self.bank = 'sc은행'
 
         num1 = random.randint(0,999)
@@ -22,6 +24,7 @@ class Account:
 
         Account.account_count += 1
     
+        
     def get_account_num(self):
         print(Account.account_count)
         
@@ -30,6 +33,7 @@ class Account:
             self.balance += d_amount #잔액증가
 
             self.deposit_count += 1
+            self.deposit_log.append(d_amount)
 
         if self.deposit_count % 5 == 0:
             self.balance = self.balance * 1.01
@@ -39,10 +43,19 @@ class Account:
             print('출금 불가')
         else:
             self.balance -= w_amount
-
+            self.withdraw_log.append(w_amount)
+        
     def display_info(self):
         print(f'은행이름: {self.bank}\n예금주: {self.name}\n계좌번호: {self.account_num}\n잔고: {self.balance:,}')
     
+    def deposit_history(self):
+        for amount in self.deposit_log:
+            print(amount)
+
+    def withdraw_history(self):
+        for amount in self.withdraw_log:
+            print(amount)
+
 bank_list = []
 
 a = Account('용준',1_000_000)
@@ -53,15 +66,12 @@ bank_list.append(a)
 bank_list.append(b)
 bank_list.append(c)
 
-# bank_list에 객체들이 담겨 있다고 가정합니다.
 for account in bank_list:
-    account.display_info() # 각 객체의 정보를 출력하는 메서드 호출
-    print("-" * 25)
+    if account.balance >= 1000000:
+        account.display_info() # 각 객체의 정보를 출력하는 메서드 호출
+        print("-" * 25)
 
 a.deposit(100)
-a.deposit(100)
-a.deposit(100)
-a.deposit(100)
-a.deposit(100)
-a.deposit(10000)
-print(a.balance)
+a.deposit_history()
+a.withdraw(200)
+a.withdraw_history()
